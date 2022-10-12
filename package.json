@@ -6,7 +6,8 @@
   "scripts": {
     "test": "make test",
     "build": "npm run build --prefix frontend",
-    "start": "start-server -s ./frontend/build"
+    "start": "start-server -s ./frontend/build",
+    "postinstall": "cd frontend && npm ci"
   },
   "repository": {
     "type": "git",
