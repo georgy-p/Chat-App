@@ -5,4 +5,8 @@ import App from './components/App';
 
 const mountNode = document.getElementById('root');
 const root = ReactDOM.createRoot(mountNode);
-root.render(<App />);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
