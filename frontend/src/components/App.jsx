@@ -4,18 +4,21 @@ import {
   RouterProvider,
   // Route,
 } from 'react-router-dom';
+import Root from '../routes/root.jsx';
 import ErrorPage from '../routes/error-page.jsx';
 import LoginPage from './Login.jsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: null,
+    element: <Root />,
     errorElement: <ErrorPage />,
-  },
-  {
-    path: 'login',
-    element: <LoginPage />,
+    children: [
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
+    ],
   },
 ]);
 
