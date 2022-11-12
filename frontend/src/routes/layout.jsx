@@ -1,7 +1,7 @@
 import { Navbar, Container } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';
 
-const Root = () => (
+const Layout = () => (
   <div className="d-flex flex-column h-100">
     <Navbar bg="light" expand="lg" className="shadow-sm">
       <Container>
@@ -12,4 +12,4 @@ const Root = () => (
   </div>
 );
 
-export default Root;
+export default Layout;
