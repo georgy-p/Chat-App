@@ -6,12 +6,11 @@ import {
   useLocation,
 } from 'react-router-dom';
 import Layout from '../routes/layout.jsx';
-// import ErrorPage from '../routes/error-page.jsx';
+import ErrorPage from '../routes/error-page.jsx';
 import LoginPage from './LoginPage.jsx';
 import AuthContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
-import PrivatePage from '../routes/private.jsx';
-// import useAuth from '../hooks/index.jsx';
+import ChatPage from './ChatPage.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -41,16 +40,18 @@ const PrivateRoute = ({ children }) => {
 
 const App = () => (
   <AuthProvider>
-    <Routes element={<Layout />}>
-      <Route
-        path="/"
-        element={(
-          <PrivateRoute>
-            <PrivatePage />
-          </PrivateRoute>
+    <Routes>
+      <Route element={<Layout />} errorElement={<ErrorPage />}>
+        <Route
+          path="/"
+          element={(
+            <PrivateRoute>
+              <ChatPage />
+            </PrivateRoute>
           )}
-      />
-      <Route path="/login" element={<LoginPage />} />
+        />
+        <Route path="/login" element={<LoginPage />} />
+      </Route>
     </Routes>
   </AuthProvider>
 );
