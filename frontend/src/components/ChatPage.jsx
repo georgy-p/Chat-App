@@ -3,23 +3,26 @@ import {
   Col, Container, Row, Button,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { io } from 'socket.io-client';
 import ChatWindow from './chat/ChatWindow.jsx';
 import { fetchChatData } from '../slices/chatInfoSlice.js';
 import Channel from './chat/Channel.jsx';
+
+const socket = io();
 
 const ChatPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchChatData());
+    console.log('Data has been fetched');
   }, [dispatch]);
 
+  useEffect(() => {
+    console.log(socket.connected);
+  }, []);
+
   const channels = useSelector((state) => state.chatReducer.channelsInfo.channels);
-  const currChannel = useSelector((state) => {
-    const currChId = state.chatReducer.channelsInfo.currentChannelId;
-    const channel = channels.find(({ id }) => id === currChId);
-    return channel;
-  });
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
@@ -41,7 +44,7 @@ const ChatPage = () => {
           </ul>
         </Col>
         <Col className="p-0 h-100">
-          <ChatWindow currChannel={currChannel} />
+          <ChatWindow />
         </Col>
       </Row>
     </Container>
