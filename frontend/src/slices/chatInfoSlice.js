@@ -42,6 +42,10 @@ const chatInfoSlice = createSlice({
       const { id } = payload;
       state.channelsInfo.currentChannelId = id;
     },
+    setNewMessage(state, { payload }) {
+      const message = payload;
+      state.messagesInfo.messages.push(message);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchChatData.fulfilled, (state, { payload }) => {
