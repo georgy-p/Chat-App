@@ -1,17 +1,39 @@
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { useRef, useEffect } from 'react';
+import * as yup from 'yup';
 import { useFormik } from 'formik';
 import {
   Button, Form, InputGroup,
 } from 'react-bootstrap';
+import { io } from 'socket.io-client';
 
-const MessageForm = () => {
+const getFormattedMsg = (message, channelId) => {
+  const userId = JSON.parse(localStorage.getItem('userId'));
+  const { username } = userId;
+  return { body: message, channelId, username };
+};
+
+const socket = io();
+
+const MessageForm = ({ channelId }) => {
+  const inputRef = useRef();
   const formik = useFormik({
     initialValues: {
       message: '',
     },
+    validationSchema: yup.object({
+      message: yup.string().required().min(1),
+    }),
     onSubmit: (values) => {
-      console.log(values);
+      const newMessage = getFormattedMsg(values.message, channelId);
+      socket.emit('newMessage', newMessage);
+      formik.resetForm();
     },
   });
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   return (
     <div className="mt-auto px-5 py-3">
@@ -22,8 +44,10 @@ const MessageForm = () => {
             aria-label="Новое сообщение"
             placeholder="Введите новое сообщение..."
             className="border-0 p-0 ps-2"
+            ref={inputRef}
+            {...formik.getFieldProps('message')}
           />
-          <Button type="submit" variant="group-vertical">
+          <Button type="submit" variant="group-vertical" disabled={!socket.connected}>
             <ion-icon name="send" />
           </Button>
         </InputGroup>
