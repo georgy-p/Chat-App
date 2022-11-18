@@ -1,5 +1,8 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { io } from 'socket.io-client';
 import MessageForm from './MessageForm.jsx';
+import { actions as chatActions } from '../../slices/chatInfoSlice';
 
 const renderMessage = (message) => (
   <div key={message.id} className="text-break mb-2">
@@ -16,7 +19,11 @@ const renderMessage = (message) => (
 //  id: 6,
 // };
 
+const socket = io();
+
 const ChatWindow = () => {
+  const dispatch = useDispatch();
+
   const currChannel = useSelector((state) => {
     const { channels } = state.chatReducer.channelsInfo;
     const currChId = state.chatReducer.channelsInfo.currentChannelId;
@@ -27,6 +34,12 @@ const ChatWindow = () => {
     const { messages } = state.chatReducer.messagesInfo;
     return messages.filter((message) => message.channelId === currChannel.id);
   });
+
+  useEffect(() => {
+    socket.on('newMessage', (payload) => {
+      dispatch(chatActions.setNewMessage(payload));
+    });
+  }, [dispatch]);
 
   return (
     <div className="d-flex flex-column h-100">
@@ -46,7 +59,7 @@ const ChatWindow = () => {
       <div id="messages-box" className="chat-messages overflow-auto px-5">
         {channelMessages.map((message) => renderMessage(message))}
       </div>
-      <MessageForm />
+      {currChannel && <MessageForm channelId={currChannel.id} />}
     </div>
   );
 };
