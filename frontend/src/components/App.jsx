@@ -9,7 +9,7 @@ import Layout from '../routes/layout.jsx';
 import ErrorPage from '../routes/error-page.jsx';
 import LoginPage from './LoginPage.jsx';
 import AuthContext from '../contexts/index.jsx';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 import ChatPage from './ChatPage.jsx';
 
 const AuthProvider = ({ children }) => {
