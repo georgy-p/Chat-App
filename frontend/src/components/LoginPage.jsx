@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import {
   Button, Container, Row, Col, Card, FloatingLabel, Form,
 } from 'react-bootstrap';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
 
 const LoginPage = () => {
