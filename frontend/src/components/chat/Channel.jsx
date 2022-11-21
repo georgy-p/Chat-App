@@ -1,16 +1,15 @@
 import * as cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions as chatActions } from '../../slices/chatInfoSlice';
-// import { Button } from 'react-bootstrap';
+import { actions as channelsActions } from '../../slices/channelsSlice.js';
 
 const Channel = ({ channel }) => {
   const dispatch = useDispatch();
-  const currChannelId = useSelector((state) => state.chatReducer.channelsInfo.currentChannelId);
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
-  const handleClick = () => dispatch(chatActions.setNewChannelId({ id: channel.id }));
+  const handleClick = () => dispatch(channelsActions.setNewId({ id: channel.id }));
 
   const btnClass = cn('w-100', 'rounded-0', 'text-start', 'btn', {
-    'btn-secondary': channel.id === currChannelId,
+    'btn-secondary': channel.id === currentChannelId,
   });
 
   return (
