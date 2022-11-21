@@ -5,7 +5,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import ChatWindow from './chat/ChatWindow.jsx';
-import { fetchChatData } from '../slices/chatInfoSlice.js';
+import { fetchChatData, chSelectors } from '../slices/channelsSlice.js';
+import { actions as msgActions } from '../slices/messagesSlice.js';
 import Channel from './chat/Channel.jsx';
 
 const socket = io();
@@ -22,7 +23,13 @@ const ChatPage = () => {
     console.log(socket.connected);
   }, []);
 
-  const channels = useSelector((state) => state.chatReducer.channelsInfo.channels);
+  useEffect(() => {
+    socket.on('newMessage', (payload) => {
+      dispatch(msgActions.addMessage(payload));
+    });
+  }, [dispatch]);
+
+  const channels = useSelector(chSelectors.selectAll);
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
