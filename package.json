@@ -7,7 +7,7 @@
     "test": "make test",
     "build": "npm run build --prefix frontend",
     "start": "start-server -s ./frontend/build",
-    "postinstall": "cd frontend && npm ci"
+    "postinstall": "npm ci --prefix frontend"
   },
   "repository": {
     "type": "git",
