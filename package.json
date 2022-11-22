@@ -5,9 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "test": "make test",
-    "build": "npm run build --prefix frontend",
+    "build": "cd frontend && npm run build",
     "start": "start-server -s ./frontend/build",
-    "postinstall": "npm ci --prefix frontend"
+    "postinstall": "cd frontend && npm ci"
   },
   "repository": {
     "type": "git",
