@@ -25,6 +25,7 @@ const renderModal = (type) => {
 const ChatPage = () => {
   const dispatch = useDispatch();
   const addModal = () => dispatch(modalActions.openModal({ type: 'adding', channelId: null }));
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
   useEffect(() => {
     dispatch(fetchChatData());
@@ -39,7 +40,6 @@ const ChatPage = () => {
   useEffect(() => {
     socket.on('newChannel', (payload) => {
       dispatch(chActions.addChannel(payload));
-      dispatch(chActions.setNewId({ id: payload.id }));
     });
   }, [dispatch]);
 
@@ -54,8 +54,11 @@ const ChatPage = () => {
   useEffect(() => {
     socket.on('removeChannel', (payload) => {
       dispatch(chActions.removeChannel(payload.id));
+      if (payload.id === currentChannelId) {
+        dispatch(chActions.setNewId({ id: 1 }));
+      }
     });
-  }, [dispatch]);
+  }, [currentChannelId, dispatch]);
 
   const channels = useSelector(chSelectors.selectAll);
   const modalType = useSelector((state) => state.modals.type);
