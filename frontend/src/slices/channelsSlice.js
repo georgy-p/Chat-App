@@ -35,6 +35,9 @@ const channelsSlice = createSlice({
     setNewId(state, { payload }) {
       state.currentChannelId = payload.id;
     },
+    addChannel: channelsAdapter.addOne,
+    renameChannel: channelsAdapter.updateOne,
+    removeChannel: channelsAdapter.removeOne,
   },
   extraReducers: (builder) => {
     builder.addCase(fetchChatData.fulfilled, (state, { payload }) => {
