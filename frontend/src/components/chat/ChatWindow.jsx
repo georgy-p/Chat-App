@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { useRef, useEffect } from 'react';
 import MessageForm from './MessageForm.jsx';
 import { chSelectors } from '../../slices/channelsSlice.js';
 import { msgSelectors } from '../../slices/messagesSlice.js';
@@ -23,6 +24,12 @@ const ChatWindow = () => {
     return { currChannel: channel, channelMessages: messages };
   });
 
+  const lastMessage = useRef(null);
+  const scrollToBottom = () => {
+    lastMessage.current.scrollIntoView();
+  };
+  useEffect(scrollToBottom);
+
   return (
     <div className="d-flex flex-column h-100">
       <div className="bg-light mb-4 p-3 shadow-sm small">
@@ -40,6 +47,7 @@ const ChatWindow = () => {
       </div>
       <div id="messages-box" className="chat-messages overflow-auto px-5">
         {channelMessages.map((message) => renderMessage(message))}
+        <div ref={lastMessage} />
       </div>
       {currChannel && <MessageForm channelId={currChannel.id} />}
     </div>
