@@ -5,23 +5,30 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import ChatWindow from './chat/ChatWindow.jsx';
-import { fetchChatData, chSelectors } from '../slices/channelsSlice.js';
+import { chSelectors, fetchChatData, actions as chActions } from '../slices/channelsSlice.js';
 import { actions as msgActions } from '../slices/messagesSlice.js';
+import { actions as modalActions } from '../slices/modalsSlice.js';
 import Channel from './chat/Channel.jsx';
+import getModal from './chat/modals/index.js';
 
 const socket = io();
 
+const renderModal = (type) => {
+  if (type === null) {
+    return null;
+  }
+
+  const Modal = getModal(type);
+  return <Modal />;
+};
+
 const ChatPage = () => {
   const dispatch = useDispatch();
+  const addModal = () => dispatch(modalActions.openModal({ type: 'adding', channelId: null }));
 
   useEffect(() => {
     dispatch(fetchChatData());
-    console.log('Data has been fetched');
   }, [dispatch]);
-
-  useEffect(() => {
-    console.log(socket.connected);
-  }, []);
 
   useEffect(() => {
     socket.on('newMessage', (payload) => {
@@ -29,7 +36,29 @@ const ChatPage = () => {
     });
   }, [dispatch]);
 
+  useEffect(() => {
+    socket.on('newChannel', (payload) => {
+      dispatch(chActions.addChannel(payload));
+      dispatch(chActions.setNewId({ id: payload.id }));
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    socket.on('renameChannel', (payload) => {
+      const chId = payload.id;
+      const newName = payload.name;
+      dispatch(chActions.renameChannel({ id: chId, changes: { name: newName } }));
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    socket.on('removeChannel', (payload) => {
+      dispatch(chActions.removeChannel(payload.id));
+    });
+  }, [dispatch]);
+
   const channels = useSelector(chSelectors.selectAll);
+  const modalType = useSelector((state) => state.modals.type);
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
@@ -37,7 +66,7 @@ const ChatPage = () => {
         <Col className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
           <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
             <span>Каналы</span>
-            <Button variant="group-vertical" className="p-0">
+            <Button variant="group-vertical" className="p-0" onClick={addModal}>
               <ion-icon name="add" size="small" />
             </Button>
           </div>
@@ -54,6 +83,7 @@ const ChatPage = () => {
           <ChatWindow />
         </Col>
       </Row>
+      {renderModal(modalType)}
     </Container>
   );
 };
