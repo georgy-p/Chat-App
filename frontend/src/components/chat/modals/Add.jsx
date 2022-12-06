@@ -8,7 +8,7 @@ import { io } from 'socket.io-client';
 import {
   Button, Form, Modal,
 } from 'react-bootstrap';
-import { chSelectors } from '../../../slices/channelsSlice.js';
+import { chSelectors, actions as chActions } from '../../../slices/channelsSlice.js';
 import { actions as modalsActions } from '../../../slices/modalsSlice.js';
 
 const socket = io();
@@ -24,6 +24,7 @@ const Add = () => {
   }, []);
 
   const channelsNames = useSelector(chSelectors.selectAll).map((ch) => ch.name);
+  const lastId = _.last(useSelector(chSelectors.selectIds));
   const formik = useFormik({
     initialValues: {
       body: '',
@@ -36,6 +37,7 @@ const Add = () => {
         setAddFailed(true);
       } else {
         socket.emit('newChannel', { name: values.body });
+        dispatch(chActions.setNewId({ id: lastId + 1 }));
         handleClose();
       }
     },
