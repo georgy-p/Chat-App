@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { fetchChatData } from './channelsSlice.js';
+import { fetchChatData, actions as chActions } from './channelsSlice.js';
 
 const messagesAdapter = createEntityAdapter();
 
@@ -12,7 +12,13 @@ const messagesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchChatData.fulfilled, (state, { payload }) => {
       messagesAdapter.upsertMany(state, payload.messages);
-    });
+    })
+      .addCase(chActions.removeChannel, (state, { payload }) => {
+        const channelId = payload;
+        const restEntities = Object.values(state.entities)
+          .filter((msg) => msg.channelId !== channelId);
+        messagesAdapter.setAll(state, restEntities);
+      });
   },
 });
 
