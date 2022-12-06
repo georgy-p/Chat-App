@@ -11,9 +11,11 @@ import LoginPage from './LoginPage.jsx';
 import AuthContext from '../contexts/index.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 import ChatPage from './ChatPage.jsx';
+import SignupPage from './SignupPage.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const isAuth = localStorage.getItem('userId') === null;
+  const [loggedIn, setLoggedIn] = useState(!isAuth);
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
     localStorage.removeItem('userId');
@@ -41,7 +43,7 @@ const PrivateRoute = ({ children }) => {
 const App = () => (
   <AuthProvider>
     <Routes>
-      <Route element={<Layout />} errorElement={<ErrorPage />}>
+      <Route element={<Layout />}>
         <Route
           path="/"
           element={(
@@ -51,6 +53,8 @@ const App = () => (
           )}
         />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="*" element={<ErrorPage />} />
       </Route>
     </Routes>
   </AuthProvider>
