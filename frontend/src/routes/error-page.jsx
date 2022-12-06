@@ -1,18 +1,14 @@
-import { useRouteError } from 'react-router-dom';
+import logo from './404.jpg';
 
-const ErrorPage = () => {
-  const error = useRouteError();
-  console.error(error);
-
-  return (
-    <div id="error-page">
-      <h1>Упс!</h1>
-      <p>Произошла неожиданная ошибка</p>
-      <p>
-        <i>{error.statusText || error.message}</i>
-      </p>
-    </div>
-  );
-};
+const ErrorPage = () => (
+  <div className="text-center">
+    <img src={logo} alt="Картинка ошибки" className="img-fluid h-25" />
+    <h1>Упс!</h1>
+    <p>Кажется вы попали на несуществующую страницу</p>
+    <p>
+      <a href="/">Вернуться на главную страницу</a>
+    </p>
+  </div>
+);
 
 export default ErrorPage;
