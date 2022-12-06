@@ -1,10 +1,15 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import * as cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions as channelsActions } from '../../slices/channelsSlice.js';
+import { actions as modalActions } from '../../slices/modalsSlice.js';
 
 const Channel = ({ channel }) => {
   const dispatch = useDispatch();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
+
+  const removeModal = () => dispatch(modalActions.openModal({ type: 'removing', channelId: channel.id }));
+  const renameModal = () => dispatch(modalActions.openModal({ type: 'renaming', channelId: channel.id }));
 
   const handleClick = () => dispatch(channelsActions.setNewId({ id: channel.id }));
 
@@ -12,12 +17,33 @@ const Channel = ({ channel }) => {
     'btn-secondary': channel.id === currentChannelId,
   });
 
+  const btnGroupClass = cn('flex-grow-0', 'dropdown-toggle', 'dropdown-toggle-split', 'btn', {
+    'btn-secondary': channel.id === currentChannelId,
+  });
+
+  const renderName = () => (
+    <button type="button" onClick={handleClick} className={btnClass}>
+      <span># </span>
+      {channel.name}
+    </button>
+  );
+
+  const renderBtnGroup = () => (
+    <div role="group" className="d-flex dropdown btn-group">
+      {renderName()}
+      <div className="btn-group" role="group">
+        <button type="button" id="btnGroupDrop" data-toggle="dropdown" aria-expanded="true" className={btnGroupClass} />
+        <div className="dropdown-menu" aria-labelledby="btnGroupDrop">
+          <button type="button" onClick={removeModal} className="dropdown-item">Удалить</button>
+          <button type="button" onClick={renameModal} className="dropdown-item">Переименовать</button>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <li className="nav-item w-100">
-      <button type="button" onClick={handleClick} className={btnClass}>
-        <span># </span>
-        {channel.name}
-      </button>
+      {channel.removable ? renderBtnGroup() : renderName()}
     </li>
   );
 };
