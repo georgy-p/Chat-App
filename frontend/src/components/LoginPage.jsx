@@ -82,6 +82,12 @@ const LoginPage = () => {
                 <Button type="submit" className="w-100 mb-3 btn-primary">Войти</Button>
               </Form>
             </Card.Body>
+            <Card.Footer className="p-4">
+              <div className="text-center">
+                <span>Нет аккаунта? </span>
+                <a href="/signup">Регистрация</a>
+              </div>
+            </Card.Footer>
           </Card>
         </Col>
       </Row>
