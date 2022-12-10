@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './i18n.js';
 import store from './slices/index.js';
 
 const mountNode = document.getElementById('chat');
