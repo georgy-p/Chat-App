@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 import {
   Button, Container, Row, Col, Card, FloatingLabel, Form,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
 
@@ -18,6 +19,7 @@ const SignupPage = () => {
   const [signupFailed, setSignupFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -30,9 +32,9 @@ const SignupPage = () => {
       passwordConfirmation: '',
     },
     validationSchema: Yup.object({
-      username: Yup.string().min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов').required('Обязательное поле'),
-      password: Yup.string().min(6, 'Не менее 6 символов').required('Обязательное поле'),
-      passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
+      username: Yup.string().min(3, t('signup.errors.usernameLength')).max(20, t('signup.errors.usernameLength')).required(t('signup.errors.required')),
+      password: Yup.string().min(6, t('signup.errors.passwordLength')).required(t('signup.errors.required')),
+      passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], t('signup.errors.passwordNotMatch')),
     }),
     onSubmit: async (values) => {
       setSignupFailed(false);
@@ -60,7 +62,7 @@ const SignupPage = () => {
   const isFillPasswordError = formik.touched.password && formik.errors.password;
   const isPasswordConfirmationError = formik.touched.passwordConfirmation
   && formik.errors.passwordConfirmation;
-  const signupError = 'Такой пользователь уже существует';
+  const signupError = t('signup.errors.existedUser');
 
   return (
     <Container fluid>
@@ -69,11 +71,11 @@ const SignupPage = () => {
           <Card className="shadow-sm">
             <Card.Body className="p-5">
               <Form className="justify-content-center col-12  mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-                <h1 className="text-center mb-4">Регистрация</h1>
-                <FloatingLabel label="Ваш ник" className="mb-3">
+                <h1 className="text-center mb-4">{t('signup.header')}</h1>
+                <FloatingLabel label={t('signup.form.username')} className="mb-3">
                   <Form.Control
                     name="username"
-                    placeholder="Ваш ник"
+                    placeholder={t('signup.form.username')}
                     type="text"
                     ref={inputRef}
                     isInvalid={isFillUsernameError || signupFailed}
@@ -85,10 +87,10 @@ const SignupPage = () => {
                     </Form.Control.Feedback>
                   ) : null}
                 </FloatingLabel>
-                <FloatingLabel label="Пароль" className="mb-4">
+                <FloatingLabel label={t('signup.form.password')} className="mb-4">
                   <Form.Control
                     name="password"
-                    placeholder="Пароль"
+                    placeholder={t('signup.form.password')}
                     type="password"
                     isInvalid={isFillPasswordError || signupFailed}
                     {...formik.getFieldProps('password')}
@@ -97,10 +99,10 @@ const SignupPage = () => {
                     <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
                   ) : null}
                 </FloatingLabel>
-                <FloatingLabel label="Подтвердите пароль" className="mb-4">
+                <FloatingLabel label={t('signup.form.passwordConfirm')} className="mb-4">
                   <Form.Control
                     name="password"
-                    placeholder="Подтвердите пароль"
+                    placeholder={t('signup.form.passwordConfirm')}
                     type="password"
                     isInvalid={isPasswordConfirmationError || signupFailed}
                     {...formik.getFieldProps('passwordConfirmation')}
@@ -113,7 +115,7 @@ const SignupPage = () => {
                     </Form.Control.Feedback>
                   ) : null}
                 </FloatingLabel>
-                <Button type="submit" className="w-100 mb-3 btn-primary">Зарегистрироваться</Button>
+                <Button type="submit" className="w-100 mb-3 btn-primary">{t('buttons.signup')}</Button>
               </Form>
             </Card.Body>
           </Card>

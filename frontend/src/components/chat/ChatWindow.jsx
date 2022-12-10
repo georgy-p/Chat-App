@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import MessageForm from './MessageForm.jsx';
 import { chSelectors } from '../../slices/channelsSlice.js';
 import { msgSelectors } from '../../slices/messagesSlice.js';
@@ -13,6 +14,7 @@ const renderMessage = (message) => (
 );
 
 const ChatWindow = () => {
+  const { t } = useTranslation();
   const { currChannel, channelMessages } = useSelector((state) => {
     const { currentChannelId } = state.channels;
     const channel = chSelectors.selectById(state, currentChannelId);
@@ -40,9 +42,7 @@ const ChatWindow = () => {
           </b>
         </p>
         <span className="text-muted">
-          {channelMessages.length}
-          {' '}
-          сообщений
+          {t('chat.messagesCount.key', { count: channelMessages.length })}
         </span>
       </div>
       <div id="messages-box" className="chat-messages overflow-auto px-5">

@@ -8,12 +8,14 @@ import { io } from 'socket.io-client';
 import {
   Button, Form, Modal,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { chSelectors } from '../../../slices/channelsSlice.js';
 import { actions as modalsActions } from '../../../slices/modalsSlice.js';
 
 const socket = io();
 
 const Add = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const handleClose = () => dispatch(modalsActions.closeModal());
   const channelId = useSelector((state) => state.modals.channelId);
@@ -34,10 +36,12 @@ const Add = () => {
       body: yup.string().required(),
     }),
     onSubmit: (values) => {
-      if (_.includes(channelsNames, values.body)) {
+      const newName = values.body.trim();
+
+      if (_.includes(channelsNames, newName)) {
         setRenameFailed(true);
       } else {
-        socket.emit('renameChannel', { id: channelId, name: values.body });
+        socket.emit('renameChannel', { id: channelId, name: newName });
         handleClose();
       }
     },
@@ -46,7 +50,7 @@ const Add = () => {
   return (
     <Modal show onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('modals.rename.header')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -61,13 +65,13 @@ const Add = () => {
               isInvalid={renameFailed}
               {...formik.getFieldProps('body')}
             />
-            <Form.Control.Feedback type="invalid">Должно быть уникальным</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{t('modals.errors.notUniq')}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button variant="secondary me-2" onClick={handleClose}>
-                Отменить
+                {t('buttons.cancel')}
               </Button>
               <Button type="submit" variant="primary">
-                Отправить
+                {t('buttons.send')}
               </Button>
             </div>
           </Form.Group>

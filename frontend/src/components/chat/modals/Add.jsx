@@ -8,12 +8,14 @@ import { io } from 'socket.io-client';
 import {
   Button, Form, Modal,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { chSelectors, actions as chActions } from '../../../slices/channelsSlice.js';
 import { actions as modalsActions } from '../../../slices/modalsSlice.js';
 
 const socket = io();
 
 const Add = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const handleClose = () => dispatch(modalsActions.closeModal());
   const [addFailed, setAddFailed] = useState(false);
@@ -33,10 +35,11 @@ const Add = () => {
       body: yup.string().required(),
     }),
     onSubmit: (values) => {
-      if (_.includes(channelsNames, values.body)) {
+      const newChannel = values.body.trim();
+      if (_.includes(channelsNames, newChannel)) {
         setAddFailed(true);
       } else {
-        socket.emit('newChannel', { name: values.body });
+        socket.emit('newChannel', { name: newChannel });
         dispatch(chActions.setNewId({ id: lastId + 1 }));
         handleClose();
       }
@@ -46,7 +49,7 @@ const Add = () => {
   return (
     <Modal show onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('modals.add.header')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -61,13 +64,13 @@ const Add = () => {
               isInvalid={addFailed}
               {...formik.getFieldProps('body')}
             />
-            <Form.Control.Feedback type="invalid">Должно быть уникальным</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{t('modals.errors.notUniq')}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button variant="secondary me-2" onClick={handleClose}>
-                Отменить
+                {t('buttons.cancel')}
               </Button>
               <Button type="submit" variant="primary">
-                Добавить
+                {t('buttons.add')}
               </Button>
             </div>
           </Form.Group>

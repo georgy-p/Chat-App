@@ -6,6 +6,7 @@ import {
   Button, Form, InputGroup,
 } from 'react-bootstrap';
 import { io } from 'socket.io-client';
+import { useTranslation } from 'react-i18next';
 
 const getFormattedMsg = (message, channelId) => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -16,6 +17,7 @@ const getFormattedMsg = (message, channelId) => {
 const socket = io();
 
 const MessageForm = ({ channelId }) => {
+  const { t } = useTranslation();
   const inputRef = useRef();
   const formik = useFormik({
     initialValues: {
@@ -41,8 +43,8 @@ const MessageForm = ({ channelId }) => {
         <InputGroup hasValidation>
           <Form.Control
             name="body"
-            aria-label="Новое сообщение"
-            placeholder="Введите новое сообщение..."
+            aria-label={t('chat.label')}
+            placeholder={t('chat.enterMessage')}
             className="border-0 p-0 ps-2"
             ref={inputRef}
             {...formik.getFieldProps('message')}

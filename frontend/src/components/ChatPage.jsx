@@ -4,6 +4,7 @@ import {
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
+import { useTranslation } from 'react-i18next';
 import ChatWindow from './chat/ChatWindow.jsx';
 import { chSelectors, fetchChatData, actions as chActions } from '../slices/channelsSlice.js';
 import { actions as msgActions } from '../slices/messagesSlice.js';
@@ -23,6 +24,7 @@ const renderModal = (type) => {
 };
 
 const ChatPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const addModal = () => dispatch(modalActions.openModal({ type: 'adding', channelId: null }));
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
@@ -68,7 +70,7 @@ const ChatPage = () => {
       <Row className="h-100 bg-light flex-md-row">
         <Col className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
           <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
-            <span>Каналы</span>
+            <span>{t('chat.channels')}</span>
             <Button variant="group-vertical" className="p-0" onClick={addModal}>
               <ion-icon name="add" size="small" />
             </Button>
