@@ -2,6 +2,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { actions as modalsActions } from '../../../slices/modalsSlice';
 import { actions as chActions } from '../../../slices/channelsSlice';
 
@@ -20,6 +21,7 @@ const Remove = () => {
       dispatch(chActions.setNewId({ id: 1 }));
     }
     handleClose();
+    toast.success(t('alerts.remove'));
   };
 
   return (

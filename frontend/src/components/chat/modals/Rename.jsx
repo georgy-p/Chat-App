@@ -9,6 +9,7 @@ import {
   Button, Form, Modal,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { chSelectors } from '../../../slices/channelsSlice.js';
 import { actions as modalsActions } from '../../../slices/modalsSlice.js';
 
@@ -43,6 +44,7 @@ const Add = () => {
       } else {
         socket.emit('renameChannel', { id: channelId, name: newName });
         handleClose();
+        toast.success(t('alerts.rename'));
       }
     },
   });

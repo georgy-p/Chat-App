@@ -9,6 +9,7 @@ import {
   Button, Form, Modal,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { chSelectors, actions as chActions } from '../../../slices/channelsSlice.js';
 import { actions as modalsActions } from '../../../slices/modalsSlice.js';
 
@@ -42,6 +43,7 @@ const Add = () => {
         socket.emit('newChannel', { name: newChannel });
         dispatch(chActions.setNewId({ id: lastId + 1 }));
         handleClose();
+        toast.success(t('alerts.created'));
       }
     },
   });
