@@ -24,7 +24,7 @@ const MessageForm = ({ channelId }) => {
       message: '',
     },
     validationSchema: yup.object({
-      message: yup.string().required().min(1),
+      message: yup.string().required().trim().min(1),
     }),
     onSubmit: (values) => {
       const newMessage = getFormattedMsg(values.message, channelId);
