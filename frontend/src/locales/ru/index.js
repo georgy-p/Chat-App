@@ -3,6 +3,7 @@ import signup from './signupText.js';
 import chat from './chatText.js';
 import modals from './modalsText.js';
 import buttons from './buttonsText.js';
+import alerts from './alerts.js';
 
 const ru = {
   translation: {
@@ -11,6 +12,7 @@ const ru = {
     chat,
     modals,
     buttons,
+    alerts,
   },
 };
 
