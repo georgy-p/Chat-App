@@ -4,6 +4,7 @@ import chat from './chatText.js';
 import modals from './modalsText.js';
 import buttons from './buttonsText.js';
 import alerts from './alerts.js';
+import errors from './errors.js';
 
 const ru = {
   translation: {
@@ -13,6 +14,7 @@ const ru = {
     modals,
     buttons,
     alerts,
+    errors,
   },
 };
 
