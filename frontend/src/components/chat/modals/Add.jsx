@@ -2,7 +2,7 @@
 import { useFormik } from 'formik';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as yup from 'yup';
+import * as Yup from 'yup';
 import _ from 'lodash';
 import { io } from 'socket.io-client';
 import {
@@ -20,33 +20,41 @@ const Add = () => {
   const dispatch = useDispatch();
   const handleClose = () => dispatch(modalsActions.closeModal());
   const [addFailed, setAddFailed] = useState(false);
-
   const inputRef = useRef();
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
   const channelsNames = useSelector(chSelectors.selectAll).map((ch) => ch.name);
-  const lastId = _.last(useSelector(chSelectors.selectIds));
+
   const formik = useFormik({
     initialValues: {
-      body: '',
+      channel: '',
     },
-    validationSchema: yup.object({
-      body: yup.string().required(),
+    validationSchema: Yup.object({
+      channel: Yup
+        .string().trim().min(3, t('errors.min3')).max(20, t('errors.min3'))
+        .required(t('errors.required')),
     }),
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: (values) => {
-      const newChannel = values.body.trim();
+      const newChannel = values.channel.trim();
       if (_.includes(channelsNames, newChannel)) {
         setAddFailed(true);
       } else {
-        socket.emit('newChannel', { name: newChannel });
-        dispatch(chActions.setNewId({ id: lastId + 1 }));
+        socket.emit('newChannel', { name: newChannel }, ({ data }) => {
+          dispatch(chActions.setNewId({ id: data.id }));
+        });
         handleClose();
         toast.success(t('alerts.created'));
       }
     },
   });
+
+  const isFillChannelError = formik.touched.channel && formik.errors.channel;
+  const notUniqError = t('modals.errors.notUniq');
 
   return (
     <Modal show onHide={handleClose} centered>
@@ -58,15 +66,20 @@ const Add = () => {
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
             <Form.Control
-              required
-              ref={inputRef}
-              name="body"
+              name="channel"
               type="text"
               className="mb-2"
-              isInvalid={addFailed}
-              {...formik.getFieldProps('body')}
+              isInvalid={isFillChannelError || addFailed}
+              ref={inputRef}
+              {...formik.getFieldProps('channel')}
             />
-            <Form.Control.Feedback type="invalid">{t('modals.errors.notUniq')}</Form.Control.Feedback>
+            {isFillChannelError || addFailed ? (
+              <Form.Control.Feedback type="invalid">
+                {
+                isFillChannelError ? formik.errors.channel : notUniqError
+              }
+              </Form.Control.Feedback>
+            ) : null}
             <div className="d-flex justify-content-end">
               <Button variant="secondary me-2" onClick={handleClose}>
                 {t('buttons.cancel')}
