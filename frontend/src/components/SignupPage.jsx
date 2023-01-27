@@ -32,8 +32,8 @@ const SignupPage = () => {
       passwordConfirmation: '',
     },
     validationSchema: Yup.object({
-      username: Yup.string().min(3, t('signup.errors.usernameLength')).max(20, t('signup.errors.usernameLength')).required(t('signup.errors.required')),
-      password: Yup.string().min(6, t('signup.errors.passwordLength')).required(t('signup.errors.required')),
+      username: Yup.string().min(3, t('errors.min3')).max(20, t('errors.min3')).required(t('errors.required')),
+      password: Yup.string().min(6, t('signup.errors.passwordLength')).required(t('errors.required')),
       passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], t('signup.errors.passwordNotMatch')),
     }),
     onSubmit: async (values) => {
@@ -95,7 +95,7 @@ const SignupPage = () => {
                     isInvalid={isFillPasswordError || signupFailed}
                     {...formik.getFieldProps('password')}
                   />
-                  {formik.touched.password && formik.errors.password ? (
+                  {isFillPasswordError ? (
                     <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
                   ) : null}
                 </FloatingLabel>
