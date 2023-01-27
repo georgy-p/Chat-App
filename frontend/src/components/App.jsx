@@ -14,8 +14,7 @@ import ChatPage from './ChatPage.jsx';
 import SignupPage from './SignupPage.jsx';
 
 const AuthProvider = ({ children }) => {
-  const isAuth = localStorage.getItem('userId') === null;
-  const [loggedIn, setLoggedIn] = useState(!isAuth);
+  const [loggedIn, setLoggedIn] = useState(false);
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
     localStorage.removeItem('userId');
