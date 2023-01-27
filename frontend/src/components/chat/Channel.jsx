@@ -5,6 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import { actions as modalActions } from '../../slices/modalsSlice.js';
 
+const filter = require('leo-profanity');
+
+filter.add(filter.getDictionary('ru'));
+filter.add(filter.getDictionary('en'));
+
 const Channel = ({ channel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -26,7 +31,7 @@ const Channel = ({ channel }) => {
   const renderName = () => (
     <button type="button" onClick={handleClick} className={btnClass}>
       <span># </span>
-      {channel.name}
+      {filter.clean(channel.name)}
     </button>
   );
 

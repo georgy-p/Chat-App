@@ -5,11 +5,16 @@ import MessageForm from './MessageForm.jsx';
 import { chSelectors } from '../../slices/channelsSlice.js';
 import { msgSelectors } from '../../slices/messagesSlice.js';
 
+const filter = require('leo-profanity');
+
+filter.add(filter.getDictionary('ru'));
+filter.add(filter.getDictionary('en'));
+
 const renderMessage = (message) => (
   <div key={message.id} className="text-break mb-2">
     <b>{message.username}</b>
     {': '}
-    {message.body}
+    {filter.clean(message.body)}
   </div>
 );
 
@@ -38,7 +43,7 @@ const ChatWindow = () => {
         <p className="mb-0">
           <b>
             <span># </span>
-            {currChannel && currChannel.name}
+            {currChannel && filter.clean(currChannel.name)}
           </b>
         </p>
         <span className="text-muted">
