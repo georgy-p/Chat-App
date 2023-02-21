@@ -9,12 +9,17 @@ Chat App is an SPA application like a simplified version of Slack. Registration 
 
 ### Examples
 Chat page:
-<img width="1237" alt="Screen Shot 2023-02-21 at 14 31 23" src="https://user-images.githubusercontent.com/81578359/220333961-fb3ad361-bfad-41b3-8df9-8c48c3bf2665.png">
+<img width="1238" alt="Screen Shot 2023-02-21 at 14 38 25" src="https://user-images.githubusercontent.com/81578359/220335601-23e70b58-18e5-4ec2-a160-2d7d9024a072.png">
 
 
 Channel rename:
-<img width="1238" alt="Screen Shot 2023-02-21 at 14 32 00" src="https://user-images.githubusercontent.com/81578359/220333974-16fa918c-e814-4e4b-a2ee-833039e6e755.png">
+<img width="1235" alt="Screen Shot 2023-02-21 at 14 39 33" src="https://user-images.githubusercontent.com/81578359/220335618-cac37599-1097-440b-9433-a222483c1579.png">
+
 
 
 Channel remove:
-<img width="1237" alt="Screen Shot 2023-02-21 at 14 32 21" src="https://user-images.githubusercontent.com/81578359/220333989-b4871e67-e7f6-4279-9f26-1f52a8a827ef.png">
+<img width="1231" alt="Screen Shot 2023-02-21 at 14 39 45" src="https://user-images.githubusercontent.com/81578359/220335632-400d8946-69e9-4d23-a320-9d59803a1d7a.png">
+
+
+Add new channel:
+<img width="1235" alt="Screen Shot 2023-02-21 at 14 40 19" src="https://user-images.githubusercontent.com/81578359/220335647-c5ed906e-a674-473f-bb95-2bd89200757d.png">
