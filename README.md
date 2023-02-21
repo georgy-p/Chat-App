@@ -5,7 +5,7 @@ Try it <a href="https://frontend-project-12-production.up.railway.app/">here</a>
 
 # About
 
-Chat App is an SPA application like a simplified version of Slack. Registration is required to use. The application allows you to create, rename and delete channels.
+Chat App is an SPA application like a simplified version of Slack. Registration is required to use. The application allows you to create, rename and delete channels. The application is built on React. Interaction with the server is carried out using web sockets. 
 
 ### Examples
 Chat page:
