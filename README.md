@@ -22,3 +22,9 @@ Chat App is an SPA application like a simplified version of Slack. Registration 
 
 #### Add new channel:
 <img width="1235" alt="Screen Shot 2023-02-21 at 14 40 19" src="https://user-images.githubusercontent.com/81578359/220335647-c5ed906e-a674-473f-bb95-2bd89200757d.png">
+
+# How to use:
+1. Clone the repository.
+2. In the root directory: `$ make install`.
+3. To make a build: `$ make build`.
+4. To start on localhost: `$ make start`.
